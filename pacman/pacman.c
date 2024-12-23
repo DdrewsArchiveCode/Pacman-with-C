@@ -5,11 +5,17 @@ With the help of Blackbox AI for board template
 */
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
 #include "pacman.h"
 
 int main(void) {
     char board[HEIGHT][WIDTH];
     int playerX, playerY;
+    // Declaring ghost, linked list for position
+    struct ghost *head = NULL;
+    head = new_ghost(head);
+
     initializeBoard(board);
     levelBuild(board, &playerX, &playerY);
     movementMechanic(board, &playerX, &playerY);

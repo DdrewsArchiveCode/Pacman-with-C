@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include <ctype.h>
+#include <stdlib.h>
 #include "pacman.h"
 
 // Function to initialize the board
@@ -47,6 +48,7 @@ void levelBuild (char board[HEIGHT][WIDTH], int *playerX, int *playerY) {
         if (input == 'w') {
             inputWall(coorX, coorY, board);
         } else if (input == 'g') {
+            // Need further correction, in order to integrate it with the linked list
             inputGhost(coorX, coorY, board);
         }
 
@@ -93,7 +95,6 @@ void movementA (char board[HEIGHT][WIDTH], int *playerX, int *playerY) {
     board[*playerX][*playerY] = PACMAN;
 }
 
-
 // Function to move player 1 step to the right
 void movementD (char board[HEIGHT][WIDTH], int *playerX, int *playerY) {
     board[*playerX][*playerY] = EMPTY;
@@ -127,7 +128,15 @@ void inputGhost(int coorX, int coorY, char board[HEIGHT][WIDTH]) {
 
 // Funtion that check the winning condition
 int winCondition (char board[HEIGHT][WIDTH]) {
-    if () {
+    char boardCp[HEIGHT][WIDTH];
+    for (int i = 0; i < HEIGHT; i++) {
+        for (int j = 0; j < WIDTH; j++) {
+            boardCp[i][j] = board[i][j];
+        }
+    }
+    
+    int check = 0;
+    if (check > 0) {
         return TRUE;
     } else {
         return FALSE;

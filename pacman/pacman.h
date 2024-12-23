@@ -18,4 +18,11 @@ void printBoard (char board[HEIGHT][WIDTH]);
     them is my own decalration
 */
 
+// constant
 #define GHOST 'G'
+
+//Function Prototype
+void levelBuild (char board[HEIGHT][WIDTH]);
+// void movementMechanic (char board[HEIGHT][WIDTH]);
+void inputWall(int coorX, int coorY, char board[HEIGHT][WIDTH]);
+void inputGhost(int coorX, int coorY, char board[HEIGHT][WIDTH]);

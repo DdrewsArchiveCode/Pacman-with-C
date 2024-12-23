@@ -20,9 +20,12 @@ void printBoard (char board[HEIGHT][WIDTH]);
 
 // constant
 #define GHOST 'G'
-
+#define TRUE 1
+#define FALSE 0
+#define MAXCAP 10
+#define MINCAP 0
 //Function Prototype
 void levelBuild (char board[HEIGHT][WIDTH]);
-// void movementMechanic (char board[HEIGHT][WIDTH]);
+void movementMechanic (char board[HEIGHT][WIDTH]);
 void inputWall(int coorX, int coorY, char board[HEIGHT][WIDTH]);
 void inputGhost(int coorX, int coorY, char board[HEIGHT][WIDTH]);

@@ -9,10 +9,8 @@ With the help of Blackbox AI for board template
 
 int main(void) {
     char board[HEIGHT][WIDTH];
-
     initializeBoard(board);
-
     levelBuild(board);
-
+    movementMechanic(board);
     return 0;
 }

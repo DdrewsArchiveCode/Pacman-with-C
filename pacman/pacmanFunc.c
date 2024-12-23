@@ -57,10 +57,28 @@ void levelBuild (char board[HEIGHT][WIDTH]) {
     }
 }
 
-// // Function to compute movement mechanic
-// void movementMechanic (char board[HEIGHT][WIDTH]) {
-//     return;
-// }
+// Function to compute movement mechanic
+void movementMechanic (char board[HEIGHT][WIDTH]) {
+    char mechanic;
+    int checker = TRUE;
+
+    while (checker = TRUE) {
+        printf("Movement command: ");
+        scanf(" %c", mechanic);
+        mechanic = tolower(mechanic);
+
+        if (mechanic == 'w') {
+            return;
+        } else if (mechanic == 's') {
+            return;
+        } else if (mechanic == 'd') {
+            return;
+        } else if (mechanic == 'a') {
+            return;
+        }
+        checker = winCondition(board);
+    }
+}
 
 // Function that add walls
 void inputWall(int coorX, int coorY, char board[HEIGHT][WIDTH]) {

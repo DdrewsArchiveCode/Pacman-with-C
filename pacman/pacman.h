@@ -25,7 +25,11 @@ void printBoard (char board[HEIGHT][WIDTH]);
 #define MAXCAP 10
 #define MINCAP 0
 //Function Prototype
-void levelBuild (char board[HEIGHT][WIDTH]);
-void movementMechanic (char board[HEIGHT][WIDTH]);
+void levelBuild (char board[HEIGHT][WIDTH], int *playerX, int *playerY);
+void movementMechanic (char board[HEIGHT][WIDTH], int *playerX, int *playerY);
 void inputWall(int coorX, int coorY, char board[HEIGHT][WIDTH]);
 void inputGhost(int coorX, int coorY, char board[HEIGHT][WIDTH]);
+void movementW(char board[HEIGHT][WIDTH], int *playerX, int *playerY);
+void movementA (char board[HEIGHT][WIDTH], int *playerX, int *playerY);
+void movementD (char board[HEIGHT][WIDTH], int *playerX, int *playerY);
+void movementS (char board[HEIGHT][WIDTH], int *playerX, int *playerY);

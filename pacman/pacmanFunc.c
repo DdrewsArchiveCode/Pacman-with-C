@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <stdlib.h>
+#include <time.h>
 #include "pacman.h"
 
 // Function to initialize the board
@@ -181,4 +182,9 @@ int winCondition (char board[HEIGHT][WIDTH]) {
     } else {
         return FALSE;
     }
+}
+
+void ghostMovement (char board[HEIGHT][WIDTH], struct ghost *head) {
+    srand(time(NULL));
+    int move = rand() % GHOSTMOVEOPTION;
 }

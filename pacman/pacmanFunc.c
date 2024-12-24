@@ -1,4 +1,4 @@
-// Files for function that are used for the pacman code
+// Files for function that are used for pacman.c
 
 #include <stdio.h>
 #include <ctype.h>
@@ -40,14 +40,15 @@ void levelBuild (char board[HEIGHT][WIDTH], int *playerX,
     printf("=== Welcome to level building phase! ===\n");
     printf("Level Building Dictionary: \n"
             "w = building a single wall \n"
-            "g = adding a ghost in the board\n");
+            "g = adding a ghost in the board\n"
+            "q = quit level building phase\n");
 
     printf ("Input the command that you wish: ");
-    scanf(" %c %d %d", &input, &coorX, &coorY);
+    scanf(" %c", &input);
     input = tolower(input);
     
     while (input != 'q') {
-        input = tolower(input);
+        scanf("%d%d", &coorX, &coorY);
         if (input == 'w') {
             inputWall(coorX, coorY, board);
         } else if (input == 'g') {
@@ -56,13 +57,14 @@ void levelBuild (char board[HEIGHT][WIDTH], int *playerX,
 
         printBoard(board);
         printf ("Input the command that you wish: ");
-        scanf(" %c %d %d", &input, &coorX, &coorY);
+        scanf(" %c", &input);
         input = tolower(input);
     }
 
     printf("Input the player innitial position: ");
-    scanf("%d%d", &playerX, &playerY);
+    scanf("%d%d", playerX, playerY);
     board[*playerX][*playerY] = PACMAN;
+    printBoard(board);
 }
 
 

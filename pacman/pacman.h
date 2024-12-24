@@ -37,7 +37,6 @@ struct ghost {
 void levelBuild (char board[HEIGHT][WIDTH], int *playerX, int *playerY, struct ghost *head);
 void movementMechanic (char board[HEIGHT][WIDTH], int *playerX, int *playerY);
 void inputWall(int coorX, int coorY, char board[HEIGHT][WIDTH]);
-// void inputGhost(int coorX, int coorY, char board[HEIGHT][WIDTH]);
 void movementW(char board[HEIGHT][WIDTH], int *playerX, int *playerY);
 void movementA (char board[HEIGHT][WIDTH], int *playerX, int *playerY);
 void movementD (char board[HEIGHT][WIDTH], int *playerX, int *playerY);

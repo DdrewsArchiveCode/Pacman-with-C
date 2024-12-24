@@ -9,7 +9,8 @@
 void initializeBoard (char board[HEIGHT][WIDTH]) {
     for (int i = 0; i < HEIGHT; i++) {
         for (int j = 0; j < WIDTH; j++) {
-            if (i == 0 || i == HEIGHT - 1 || j == 0 || j == WIDTH - 1) {
+            if (i == 0 || i == HEIGHT - 1 || 
+                j == 0 || j == WIDTH - 1) {
                 board[i][j] = WALL; // Create walls
             } else {
                 board[i][j] = DOT; // Fill with dot
@@ -29,7 +30,8 @@ void printBoard (char board[HEIGHT][WIDTH]) {
 }
 
 // Function for user to setup their own level
-void levelBuild (char board[HEIGHT][WIDTH], int *playerX, int *playerY, struct ghost *head) {
+void levelBuild (char board[HEIGHT][WIDTH], int *playerX, 
+                    int *playerY, struct ghost *head) {
     char input = 'c';
     int coorX = 0;
     int coorY = 0;
@@ -48,7 +50,6 @@ void levelBuild (char board[HEIGHT][WIDTH], int *playerX, int *playerY, struct g
         if (input == 'w') {
             inputWall(coorX, coorY, board);
         } else if (input == 'g') {
-            // Need further correction, in order to integrate it with the linked list
             head = inputGhost(coorX, coorY, board, head);
         }
 
@@ -85,6 +86,7 @@ void movementMechanic (char board[HEIGHT][WIDTH],
             movementA(board, playerX, playerY);
         }
         checker = winCondition(board);
+        printBoard(board);
     }
 }
 
@@ -156,8 +158,24 @@ int winCondition (char board[HEIGHT][WIDTH]) {
         }
     }
     
-    int check = 0;
-    if (check > 0) {
+    int count = 0;
+    int pacmanpos = 0;
+    for (int i = 0; i < HEIGHT; i++) {
+        for (int j = 0; j < WIDTH; j++) {
+            if (board[i][j] == DOT) {
+                count++;
+            }
+
+            if (board[i][j] == PACMAN) {
+                pacmanpos++;
+            }
+        }
+    } 
+
+    // Returning value for winning condition
+    if (pacmanpos == 0) {
+        return EXTRAFALSE;
+    } else if (count > 0) {
         return TRUE;
     } else {
         return FALSE;

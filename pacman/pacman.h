@@ -29,6 +29,7 @@ struct ghost {
 #define GHOST 'G'
 #define TRUE 1
 #define FALSE 0
+#define EXTRAFALSE 2
 #define MAXCAP 10
 #define MINCAP 0
 

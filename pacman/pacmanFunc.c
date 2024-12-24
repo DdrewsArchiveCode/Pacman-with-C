@@ -29,7 +29,7 @@ void printBoard (char board[HEIGHT][WIDTH]) {
 }
 
 // Function for user to setup their own level
-void levelBuild (char board[HEIGHT][WIDTH], int *playerX, int *playerY) {
+void levelBuild (char board[HEIGHT][WIDTH], int *playerX, int *playerY, struct ghost *head) {
     char input = 'c';
     int coorX = 0;
     int coorY = 0;
@@ -49,7 +49,7 @@ void levelBuild (char board[HEIGHT][WIDTH], int *playerX, int *playerY) {
             inputWall(coorX, coorY, board);
         } else if (input == 'g') {
             // Need further correction, in order to integrate it with the linked list
-            inputGhost(coorX, coorY, board);
+            head = inputGhost(coorX, coorY, board, head);
         }
 
         printBoard(board);
@@ -122,8 +122,29 @@ void inputWall(int coorX, int coorY, char board[HEIGHT][WIDTH]) {
 }
 
 // Function that add ghost
-void inputGhost(int coorX, int coorY, char board[HEIGHT][WIDTH]) {
+struct ghost *inputGhost(int coorX, int coorY, 
+                char board[HEIGHT][WIDTH], struct ghost *head) {
+    struct ghost *new = malloc(sizeof(struct ghost));
+    new->coorX = coorX;
+    new->coorY = coorY;
+    new->next = NULL;
+    if (head = NULL) {
+        head = new;
+    } else {
+        head = append(new, head);
+    }
     board[coorY][coorX] = GHOST;
+    return head;
+}
+
+// To append every new ghost from level builder to the end the linked list
+struct ghost *append (struct ghost *new, struct ghost *head) {
+    struct ghost *temp = head;
+    while (temp->next != NULL) {
+        temp = temp->next;
+    }
+    temp->next = new;
+    return head;
 }
 
 // Funtion that check the winning condition

@@ -123,6 +123,7 @@ void inputWall(int coorX, int coorY, char board[HEIGHT][WIDTH]) {
     board[coorY][coorX] = WALL;
 }
 
+// Function *inputGhost need further inspection
 // Function that add ghost
 struct ghost *inputGhost(int coorX, int coorY, 
                 char board[HEIGHT][WIDTH], struct ghost *head) {
@@ -135,6 +136,7 @@ struct ghost *inputGhost(int coorX, int coorY,
     } else {
         head = append(new, head);
     }
+
     board[coorY][coorX] = GHOST;
     return head;
 }

@@ -44,3 +44,4 @@ void movementD (char board[HEIGHT][WIDTH], int *playerX, int *playerY);
 void movementS (char board[HEIGHT][WIDTH], int *playerX, int *playerY);
 struct ghost *inputGhost(int coorX, int coorY, char board[HEIGHT][WIDTH], struct ghost *head);
 struct ghost *append (struct ghost *new, struct ghost *head);
+int winCondition (char board[HEIGHT][WIDTH]);

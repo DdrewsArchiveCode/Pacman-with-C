@@ -24,7 +24,7 @@ void initializeBoard (char board[HEIGHT][WIDTH]) {
 void printBoard (char board[HEIGHT][WIDTH]) {
     for (int i = 0; i < HEIGHT; i++) {
         for (int j = 0; j < WIDTH; j++) {
-            printf("%c ", board[i][j]);
+            printf("|%c| ", board[i][j]);
         }
         printf("\n");
     }
@@ -48,7 +48,7 @@ void levelBuild (char board[HEIGHT][WIDTH], int *playerX,
     input = tolower(input);
     
     while (input != 'q') {
-        scanf("%d%d", &coorX, &coorY);
+        scanf("%d%d", &coorY, &coorX); //edited
         if (input == 'w') {
             inputWall(coorX, coorY, board);
         } else if (input == 'g') {
@@ -60,9 +60,10 @@ void levelBuild (char board[HEIGHT][WIDTH], int *playerX,
         scanf(" %c", &input);
         input = tolower(input);
     }
-
+    
+    printBoard(board);
     printf("Input the player innitial position: ");
-    scanf("%d%d", playerX, playerY);
+    scanf("%d%d", playerY, playerX);
     board[*playerX][*playerY] = PACMAN;
     printBoard(board);
 }
@@ -76,7 +77,7 @@ void movementMechanic (char board[HEIGHT][WIDTH],
 
     while (checker = TRUE) {
         printf("Movement command: ");
-        scanf(" %c", mechanic);
+        scanf(" %c", &mechanic);
         mechanic = tolower(mechanic);
 
         if (mechanic == 'w') {
@@ -96,34 +97,34 @@ void movementMechanic (char board[HEIGHT][WIDTH],
 // Function to move player 1 step to the left
 void movementA (char board[HEIGHT][WIDTH], int *playerX, int *playerY) {
     board[*playerX][*playerY] = EMPTY;
-    *playerX++;
+    *playerY = *playerY - 1;
     board[*playerX][*playerY] = PACMAN;
 }
 
 // Function to move player 1 step to the right
 void movementD (char board[HEIGHT][WIDTH], int *playerX, int *playerY) {
     board[*playerX][*playerY] = EMPTY;
-    *playerX--;
+    *playerY = *playerY + 1;
     board[*playerX][*playerY] = PACMAN;
 }
 
 // Function to move player 1 step downward
 void movementS (char board[HEIGHT][WIDTH], int *playerX, int *playerY) {
     board[*playerX][*playerY] = EMPTY;
-    *playerY--;
+    *playerX = *playerX + 1;
     board[*playerX][*playerY] = PACMAN;
 }
 
 // Function to move player 1 step upward
 void movementW (char board[HEIGHT][WIDTH], int *playerX, int *playerY) {
     board[*playerX][*playerY] = EMPTY;
-    *playerY++;
+    *playerX = *playerX - 1;
     board[*playerX][*playerY] = PACMAN;
 }
 
 // Function that add walls
 void inputWall(int coorX, int coorY, char board[HEIGHT][WIDTH]) {
-    board[coorY][coorX] = WALL;
+    board[coorX][coorY] = WALL;
 }
 
 // Function that add ghost
@@ -139,7 +140,7 @@ struct ghost *inputGhost(int coorX, int coorY,
         head = append(new, head);
     }
 
-    board[coorY][coorX] = GHOST;
+    board[coorX][coorY] = GHOST;
     return head;
 }
 

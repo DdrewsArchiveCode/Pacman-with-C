@@ -10,8 +10,8 @@
 #define DOT '.'
 #define PACMAN 'P'
 
-void initializeBoard (char board[HEIGHT][WIDTH]);
-void printBoard (char board[HEIGHT][WIDTH]);
+void initializeBoard (struct tile board[HEIGHT][WIDTH]);
+void printBoard (struct tile board[HEIGHT][WIDTH]);
 
 /* 
     Starting from this line, all of 
@@ -25,6 +25,11 @@ struct ghost {
     struct ghost *next;
 };
 
+struct tile {
+    char space;
+    int ghost;
+};
+
 //Constant
 #define GHOST 'G'
 #define TRUE 1
@@ -35,14 +40,14 @@ struct ghost {
 #define GHOSTMOVEOPTION 4
 
 //Function Prototype
-void levelBuild (char board[HEIGHT][WIDTH], int *playerX, int *playerY, struct ghost *head);
-void movementMechanic (char board[HEIGHT][WIDTH], int *playerX, int *playerY);
-void inputWall(int coorX, int coorY, char board[HEIGHT][WIDTH]);
-void movementW(char board[HEIGHT][WIDTH], int *playerX, int *playerY);
-void movementA (char board[HEIGHT][WIDTH], int *playerX, int *playerY);
-void movementD (char board[HEIGHT][WIDTH], int *playerX, int *playerY);
-void movementS (char board[HEIGHT][WIDTH], int *playerX, int *playerY);
-struct ghost *inputGhost(int coorX, int coorY, char board[HEIGHT][WIDTH], struct ghost *head);
+void levelBuild (struct tile board[HEIGHT][WIDTH], int *playerX, int *playerY, struct ghost *head);
+void movementMechanic (struct tile board[HEIGHT][WIDTH], int *playerX, int *playerY);
+void inputWall(int coorX, int coorY, struct tile board[HEIGHT][WIDTH]);
+void movementW(struct tile board[HEIGHT][WIDTH], int *playerX, int *playerY);
+void movementA (struct tile board[HEIGHT][WIDTH], int *playerX, int *playerY);
+void movementD (struct tile board[HEIGHT][WIDTH], int *playerX, int *playerY);
+void movementS (struct tile board[HEIGHT][WIDTH], int *playerX, int *playerY);
+struct ghost *inputGhost(int coorX, int coorY, struct tile board[HEIGHT][WIDTH], struct ghost *head);
 struct ghost *append (struct ghost *new, struct ghost *head);
-int winCondition (char board[HEIGHT][WIDTH]);
-void ghostMovement (char board[HEIGHT][WIDTH], struct ghost *head);
+int winCondition (struct tile board[HEIGHT][WIDTH]);
+void ghostMovement (struct tile board[HEIGHT][WIDTH], struct ghost *head);

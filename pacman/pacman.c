@@ -12,7 +12,7 @@ With the help of Blackbox AI for board template
 #include "pacman.h"
 
 int main(void) {
-    char board[HEIGHT][WIDTH];
+    struct tile board[HEIGHT][WIDTH];
     int playerX, playerY;
     struct ghost *head = NULL;
 

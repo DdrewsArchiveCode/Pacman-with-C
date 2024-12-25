@@ -33,6 +33,7 @@ struct ghost {
 #define MAXCAP 10
 #define MINCAP 0
 #define GHOSTMOVEOPTION 4
+
 //Function Prototype
 void levelBuild (char board[HEIGHT][WIDTH], int *playerX, int *playerY, struct ghost *head);
 void movementMechanic (char board[HEIGHT][WIDTH], int *playerX, int *playerY);

@@ -1,5 +1,4 @@
 // Files for function that are used for pacman.c
-
 #include <stdio.h>
 #include <ctype.h>
 #include <stdlib.h>
@@ -26,8 +25,10 @@ void printBoard (struct tile board[HEIGHT][WIDTH]) {
         for (int j = 0; j < WIDTH; j++) {
             printf("|");
             struct tile curr = board[i][j];
-            if (curr.ghost == TRUE) {
-                printf("%c|", GHOST);
+            if (curr.player == TRUE) {
+                printf("^v^|");
+            } else if (curr.ghost == TRUE) {
+                printf("G|");
             } else if (curr.space == WALL) {
                 printf("%c|", WALL);
             } else if (curr.space == DOT) {
@@ -73,7 +74,7 @@ void levelBuild (struct tile board[HEIGHT][WIDTH], int *playerX,
     printBoard(board);
     printf("Input the player innitial position: ");
     scanf("%d%d", playerY, playerX);
-    board[*playerX][*playerY].space = PACMAN;
+    board[*playerX][*playerY].player = TRUE;
     printBoard(board);
 }
 
@@ -106,29 +107,33 @@ void movementMechanic (struct tile board[HEIGHT][WIDTH],
 // Function to move player 1 step to the left
 void movementA (struct tile board[HEIGHT][WIDTH], int *playerX, int *playerY) {
     board[*playerX][*playerY].space = EMPTY;
+    board[*playerX][*playerY].player = FALSE;
     *playerY = *playerY - 1;
-    board[*playerX][*playerY].space = PACMAN;
+    board[*playerX][*playerY].player = TRUE;
 }
 
 // Function to move player 1 step to the right
 void movementD (struct tile board[HEIGHT][WIDTH], int *playerX, int *playerY) {
     board[*playerX][*playerY].space = EMPTY;
+    board[*playerX][*playerY].player = FALSE;
     *playerY = *playerY + 1;
-    board[*playerX][*playerY].space = PACMAN;
+    board[*playerX][*playerY].player = TRUE;
 }
 
 // Function to move player 1 step downward
 void movementS (struct tile board[HEIGHT][WIDTH], int *playerX, int *playerY) {
     board[*playerX][*playerY].space = EMPTY;
+    board[*playerX][*playerY].player = FALSE;
     *playerX = *playerX + 1;
-    board[*playerX][*playerY].space = PACMAN;
+    board[*playerX][*playerY].player = TRUE;
 }
 
 // Function to move player 1 step upward
 void movementW (struct tile board[HEIGHT][WIDTH], int *playerX, int *playerY) {
     board[*playerX][*playerY].space = EMPTY;
+    board[*playerX][*playerY].player = FALSE;
     *playerX = *playerX - 1;
-    board[*playerX][*playerY].space = PACMAN;
+    board[*playerX][*playerY].player = TRUE;
 }
 
 // Function that add walls
@@ -180,7 +185,7 @@ int winCondition (struct tile board[HEIGHT][WIDTH]) {
                 count++;
             }
 
-            if (boardCp[i][j].space == PACMAN) {
+            if (boardCp[i][j].player == TRUE) {
                 pacmanpos++;
             }
         }

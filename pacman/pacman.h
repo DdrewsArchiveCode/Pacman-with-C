@@ -1,22 +1,6 @@
 // Header file for define, and function prototype
-
-// Line 4-14 is provided by Blackbox AI
 #define WIDTH 10
 #define HEIGHT 10
-
-// Define the characters for the board
-#define EMPTY ' '
-#define WALL '#'
-#define DOT '.'
-#define PACMAN 'P'
-
-void initializeBoard (struct tile board[HEIGHT][WIDTH]);
-void printBoard (struct tile board[HEIGHT][WIDTH]);
-
-/* 
-    Starting from this line, all of 
-    them is my own decalration
-*/
 
 // Struct 
 struct ghost {
@@ -28,10 +12,23 @@ struct ghost {
 struct tile {
     char space;
     int ghost;
+    int player;
 };
 
+// Define the characters for the board
+#define EMPTY ' '
+#define WALL '#'
+#define DOT '.'
+
+void initializeBoard (struct tile board[HEIGHT][WIDTH]);
+void printBoard (struct tile board[HEIGHT][WIDTH]);
+
+/* 
+    Starting from this line, all of 
+    them is my own decalration
+*/
+
 //Constant
-#define GHOST 'G'
 #define TRUE 1
 #define FALSE 0
 #define EXTRAFALSE 2

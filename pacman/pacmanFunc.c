@@ -203,5 +203,15 @@ int winCondition (struct tile board[HEIGHT][WIDTH]) {
 
 void ghostMovement (struct tile board[HEIGHT][WIDTH], struct ghost *head) {
     srand(time(NULL));
-    int move = rand() % GHOSTMOVEOPTION;
+    int move = abs(rand() % GHOSTMOVEOPTION);
+
+    if (move = 1) {
+        wGhost();
+    } else if (move = 2) {
+        aGhost();
+    } else if (move = 3) {
+        sGhost();
+    } else {
+        dGhost();
+    }
 }

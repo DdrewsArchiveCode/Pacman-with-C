@@ -34,7 +34,7 @@ void printBoard (struct tile board[HEIGHT][WIDTH]);
 #define EXTRAFALSE 2
 #define MAXCAP 10
 #define MINCAP 0
-#define GHOSTMOVEOPTION 4
+#define GHOSTMOVEOPTION 3
 
 //Function Prototype
 void levelBuild (struct tile board[HEIGHT][WIDTH], int *playerX, int *playerY, struct ghost *head);

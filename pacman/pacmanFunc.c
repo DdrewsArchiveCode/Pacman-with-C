@@ -87,7 +87,7 @@ void movementMechanic (struct tile board[HEIGHT][WIDTH],
     int checker = TRUE;
 
     printf("Movement command: ");
-    while (checker = TRUE) {
+    while (checker == TRUE) {
         scanf(" %c", &mechanic);
         mechanic = tolower(mechanic);
         if (validCheck(board, mechanic, playerX, playerY) == TRUE) {
@@ -102,13 +102,24 @@ void movementMechanic (struct tile board[HEIGHT][WIDTH],
             }
             printBoard(board);
             checker = winCondition(board);
-            printf("Movement command: ");
+            if (checker == TRUE) {
+                printf("Movement command: ");
+            }
         } else {
             printBoard(board);
             checker = winCondition(board);
-            printf("The designated command is invalid, "
-                    "please enter another command: ");
+            if (checker == TRUE) {
+                printf("The designated command "
+                        "is invalid, please enter"
+                        " another command: ");
+            }
         }
+    }
+
+    if (checker == FALSE) {
+        printf("=== Congrats! You win the game ===\n");
+    } else if (checker == EXTRAFALSE) {
+        printf("=== Sorry, you've lost the game ===\n");
     }
 }
 
@@ -117,6 +128,9 @@ void movementA (struct tile board[HEIGHT][WIDTH], int *playerX, int *playerY) {
     board[*playerX][*playerY].space = EMPTY;
     board[*playerX][*playerY].player = FALSE;
     *playerY = *playerY - 1;
+    if (board[*playerX][*playerY].space == DOT) {
+        board[*playerX][*playerY].space = EMPTY;
+    }
     board[*playerX][*playerY].player = TRUE;
 }
 
@@ -125,6 +139,9 @@ void movementD (struct tile board[HEIGHT][WIDTH], int *playerX, int *playerY) {
     board[*playerX][*playerY].space = EMPTY;
     board[*playerX][*playerY].player = FALSE;
     *playerY = *playerY + 1;
+    if (board[*playerX][*playerY].space == DOT) {
+        board[*playerX][*playerY].space = EMPTY;
+    }
     board[*playerX][*playerY].player = TRUE;
 }
 
@@ -133,6 +150,9 @@ void movementS (struct tile board[HEIGHT][WIDTH], int *playerX, int *playerY) {
     board[*playerX][*playerY].space = EMPTY;
     board[*playerX][*playerY].player = FALSE;
     *playerX = *playerX + 1;
+    if (board[*playerX][*playerY].space == DOT) {
+        board[*playerX][*playerY].space = EMPTY;
+    }
     board[*playerX][*playerY].player = TRUE;
 }
 
@@ -141,6 +161,9 @@ void movementW (struct tile board[HEIGHT][WIDTH], int *playerX, int *playerY) {
     board[*playerX][*playerY].space = EMPTY;
     board[*playerX][*playerY].player = FALSE;
     *playerX = *playerX - 1;
+    if (board[*playerX][*playerY].space == DOT) {
+        board[*playerX][*playerY].space = EMPTY;
+    }
     board[*playerX][*playerY].player = TRUE;
 }
 
@@ -179,28 +202,25 @@ struct ghost *append (struct ghost *new, struct ghost *head) {
 // Funtion that check the winning condition
 int winCondition (struct tile board[HEIGHT][WIDTH]) {
     struct tile boardCp[HEIGHT][WIDTH];
+    int count = 0;
+    int pacmanpos = 0;
+    
     for (int i = 0; i < HEIGHT; i++) {
         for (int j = 0; j < WIDTH; j++) {
             boardCp[i][j] = board[i][j];
-        }
-    }
-    
-    int count = 0;
-    int pacmanpos = 0;
-    for (int i = 0; i < HEIGHT; i++) {
-        for (int j = 0; j < WIDTH; j++) {
+
             if (boardCp[i][j].space == DOT) {
                 count++;
             }
 
             if (boardCp[i][j].player == TRUE) {
-                pacmanpos++;
+                pacmanpos = TRUE;
             }
         }
-    } 
+    }
 
     // Returning value for winning condition
-    if (pacmanpos == 0) {
+    if (pacmanpos != TRUE) {
         return EXTRAFALSE;
     } else if (count > 0) {
         return TRUE;
@@ -211,28 +231,50 @@ int winCondition (struct tile board[HEIGHT][WIDTH]) {
 
 void ghostMovement (struct tile board[HEIGHT][WIDTH], struct ghost *head) {
     struct ghost *tmp = head;
+
     while (tmp != NULL) {
         srand(time(NULL));
         int move = abs(rand() % GHOSTMOVEOPTION);
-
-        if (move = GHOSTW) {
-            board[tmp->coorX][tmp->coorY].ghost = FALSE;
-            tmp->coorX--;
-            board[tmp->coorX][tmp->coorY].ghost = TRUE;
-        } else if (move = GHOSTA) {
-            board[tmp->coorX][tmp->coorY].ghost = FALSE;
-            tmp->coorY--;
-            board[tmp->coorX][tmp->coorY].ghost = TRUE;
-        } else if (move = GHOSTS) {
-            board[tmp->coorX][tmp->coorY].ghost = FALSE;
-            tmp->coorX++;
-            board[tmp->coorX][tmp->coorY].ghost = TRUE;
-        } else {
-            board[tmp->coorX][tmp->coorY].ghost = FALSE;
-            tmp->coorY++;
-            board[tmp->coorX][tmp->coorY].ghost = TRUE;
+        if (checkGhost(board, move, tmp) == TRUE) {
+            if (move = GHOSTW) {
+                board[tmp->coorX][tmp->coorY].ghost = FALSE;
+                tmp->coorX--;
+                board[tmp->coorX][tmp->coorY].ghost = TRUE;
+            } else if (move = GHOSTA) {
+                board[tmp->coorX][tmp->coorY].ghost = FALSE;
+                tmp->coorY--;
+                board[tmp->coorX][tmp->coorY].ghost = TRUE;
+            } else if (move = GHOSTS) {
+                board[tmp->coorX][tmp->coorY].ghost = FALSE;
+                tmp->coorX++;
+                board[tmp->coorX][tmp->coorY].ghost = TRUE;
+            } else if (move == GHOSTD) {
+                board[tmp->coorX][tmp->coorY].ghost = FALSE;
+                tmp->coorY++;
+                board[tmp->coorX][tmp->coorY].ghost = TRUE;
+            }
         }
+        tmp = tmp->next;
     }
+}
+
+// Function to check if ghost movement is valid
+int checkGhost(struct tile board[HEIGHT][WIDTH], int move, 
+                struct ghost *tmp) {
+    if (move == moveW && 
+        board[(tmp->coorX) - 1][(tmp->coorY)].space == WALL) {
+        return FALSE;
+    } else if (move == moveA && 
+                board[(tmp->coorX)][(tmp->coorY) - 1].space == WALL) {
+        return FALSE;
+    } else if (move == moveS && 
+                board[(tmp->coorX) + 1][(tmp->coorY)].space == WALL) {
+        return FALSE;
+    } else if (move == moveD && 
+                board[(tmp->coorX)][(tmp->coorY) + 1].space == WALL) {
+        return FALSE;
+    }              
+    return TRUE;
 }
 
 // Function to check if the movement is valid

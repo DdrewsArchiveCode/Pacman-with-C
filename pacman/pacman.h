@@ -38,6 +38,7 @@ void printBoard (struct tile board[HEIGHT][WIDTH]);
 #define GHOSTW 1
 #define GHOSTA 2
 #define GHOSTS 3
+#define GHOSTD 0
 #define moveW 'w'
 #define moveA 'a'
 #define moveS 's'
@@ -60,3 +61,5 @@ int winCondition (struct tile board[HEIGHT][WIDTH]);
 void ghostMovement (struct tile board[HEIGHT][WIDTH], struct ghost *head);
 int validCheck (struct tile board[HEIGHT][WIDTH], 
                 char input, int *coorX, int *coorY);
+int checkGhost(struct tile board[HEIGHT][WIDTH], int move, 
+                struct ghost *tmp);

@@ -16,6 +16,6 @@ int main(void) {
 
     initializeBoard(board);
     levelBuild(board, &playerX, &playerY, head);
-    movementMechanic(board, &playerX, &playerY);
+    movementMechanic(board, &playerX, &playerY, head);
     return 0;
 }

@@ -47,8 +47,8 @@ void printBoard (struct tile board[HEIGHT][WIDTH]);
 //Function Prototype
 void levelBuild (struct tile board[HEIGHT][WIDTH], int *playerX, 
                 int *playerY, struct ghost *head);
-void movementMechanic (struct tile board[HEIGHT][WIDTH], 
-                        int *playerX, int *playerY);
+void movementMechanic (struct tile board[HEIGHT][WIDTH], int *playerX, 
+                        int *playerY, struct ghost *head);
 void inputWall(int coorX, int coorY, struct tile board[HEIGHT][WIDTH]);
 void movementW(struct tile board[HEIGHT][WIDTH], int *playerX, int *playerY);
 void movementA (struct tile board[HEIGHT][WIDTH], int *playerX, int *playerY);
@@ -63,3 +63,7 @@ int validCheck (struct tile board[HEIGHT][WIDTH],
                 char input, int *coorX, int *coorY);
 int checkGhost(struct tile board[HEIGHT][WIDTH], int move, 
                 struct ghost *tmp);
+void computingMovementMechanic (struct tile board[HEIGHT][WIDTH], char mechanic, 
+                                int *playerX, int *playerY, int *checker, 
+                                struct ghost *head);
+void removePlayer (struct tile board[HEIGHT][WIDTH], struct ghost *tmp);

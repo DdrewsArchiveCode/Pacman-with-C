@@ -44,7 +44,7 @@ void printBoard (struct tile board[HEIGHT][WIDTH]) {
 
 // Function for user to setup their own level
 void levelBuild (struct tile board[HEIGHT][WIDTH], int *playerX, 
-                    int *playerY, struct ghost *head) {
+                    int *playerY, struct ghost gh[GHOSTMAX]) {
     char input = 'c';
     int coorX = 0;
     int coorY = 0;
@@ -64,7 +64,7 @@ void levelBuild (struct tile board[HEIGHT][WIDTH], int *playerX,
         if (input == 'w') {
             inputWall(coorX, coorY, board);
         } else if (input == 'g') {
-            head = inputGhost(coorX, coorY, board, head);
+            inputGhost(board, gh, coorX, coorY);
         }
 
         printBoard(board);
@@ -80,10 +80,22 @@ void levelBuild (struct tile board[HEIGHT][WIDTH], int *playerX,
     printBoard(board);
 }
 
+// Function to input ghost in the board
+void inputGhost (struct tile board[HEIGHT][WIDTH], struct ghost gh[GHOSTMAX], 
+                int coorX, int coorY) {
+    int i = 0;
+    while ( gh[i].coorX != 0) {
+        i++;
+    }
+    gh[i].coorX = coorX;
+    gh[i].coorY = coorY;
+    board[gh[i].coorX][gh[i].coorY].ghost = TRUE;
+}
+
 // Function to compute movement mechanic
 void movementMechanic (struct tile board[HEIGHT][WIDTH], 
                         int *playerX, int *playerY, 
-                        struct ghost *head) {
+                        struct ghost gh[GHOSTMAX]) {
     char mechanic;
     int checker = TRUE;
 
@@ -92,7 +104,7 @@ void movementMechanic (struct tile board[HEIGHT][WIDTH],
         scanf(" %c", &mechanic);
         mechanic = tolower(mechanic);
         computingMovementMechanic(board, mechanic, 
-                        playerX, playerY, &checker, head);
+                        playerX, playerY, &checker, gh);
     }
 
     if (checker == FALSE) {
@@ -106,7 +118,7 @@ void movementMechanic (struct tile board[HEIGHT][WIDTH],
 void computingMovementMechanic (struct tile board[HEIGHT][WIDTH], 
                                 char mechanic, int *playerX, 
                                 int *playerY, int *checker, 
-                                struct ghost *head) {
+                                struct ghost gh[GHOSTMAX]) {
     if (validCheck(board, mechanic, playerX, playerY) == TRUE) {
         if (mechanic == 'w') {
             movementW(board, playerX, playerY);
@@ -117,8 +129,9 @@ void computingMovementMechanic (struct tile board[HEIGHT][WIDTH],
         } else if (mechanic == 'a') {
             movementA(board, playerX, playerY);
         }
-        ghostMovement (board, head);
+
         printBoard(board);
+        ghostMovement(board, gh);
         *checker = winCondition(board);
         if (*checker == TRUE) {
             printf("Movement command: ");
@@ -183,48 +196,18 @@ void inputWall(int coorX, int coorY, struct tile board[HEIGHT][WIDTH]) {
     board[coorX][coorY].space = WALL;
 }
 
-// Function that add ghost
-struct ghost *inputGhost(int coorX, int coorY, 
-                struct tile board[HEIGHT][WIDTH], struct ghost *head) {
-    struct ghost *new = malloc(sizeof(struct ghost));
-    new->coorX = coorX;
-    new->coorY = coorY;
-    new->next = NULL;
-    if (head == NULL) {
-        head = new;
-    } else {
-        head = append(new, head);
-    }
-
-    board[new->coorX][new->coorY].ghost = TRUE;
-    return head;
-}
-
-// To append every new ghost from level builder to the end the linked list
-struct ghost *append (struct ghost *new, struct ghost *head) {
-    struct ghost *temp = head;
-    while (temp->next != NULL) {
-        temp = temp->next;
-    }
-    temp->next = new;
-    return head;
-}
-
 // Funtion that check the winning condition
 int winCondition (struct tile board[HEIGHT][WIDTH]) {
-    struct tile boardCp[HEIGHT][WIDTH];
     int count = 0;
     int pacmanpos = 0;
     
     for (int i = 0; i < HEIGHT; i++) {
         for (int j = 0; j < WIDTH; j++) {
-            boardCp[i][j] = board[i][j];
-
-            if (boardCp[i][j].space == DOT) {
+            if (board[i][j].space == DOT) {
                 count++;
             }
 
-            if (boardCp[i][j].player == TRUE) {
+            if (board[i][j].player == TRUE) {
                 pacmanpos = TRUE;
             }
         }
@@ -240,59 +223,37 @@ int winCondition (struct tile board[HEIGHT][WIDTH]) {
     }
 }
 
-void ghostMovement (struct tile board[HEIGHT][WIDTH], struct ghost *head) {
-    struct ghost *tmp = head;
-    printf("this is ghost 1 x: %d, and y: %d", tmp->coorX, tmp->coorY);
-    while (tmp != NULL) {
-        srand(time(NULL));
-        int move = abs(rand() % GHOSTMOVEOPTION);
-        printf("%d\n", move);
-        if (checkGhost(board, move, tmp) == TRUE) {
-            if (move == GHOSTW) {
-                board[tmp->coorX][tmp->coorY].ghost = FALSE;
-                tmp->coorX--;
-                board[tmp->coorX][tmp->coorY].ghost = TRUE;
-            } else if (move == GHOSTA) {
-                board[tmp->coorX][tmp->coorY].ghost = FALSE;
-                tmp->coorY--;
-                board[tmp->coorX][tmp->coorY].ghost = TRUE;
-            } else if (move == GHOSTS) {
-                board[tmp->coorX][tmp->coorY].ghost = FALSE;
-                tmp->coorX++;
-                board[tmp->coorX][tmp->coorY].ghost = TRUE;
-            } else if (move == GHOSTD) {
-                board[tmp->coorX][tmp->coorY].ghost = FALSE;
-                tmp->coorY++;
-                board[tmp->coorX][tmp->coorY].ghost = TRUE;
-            }
-            removePlayer(board, tmp);
+// Function to compute Ghost Movement
+void ghostMovement (struct tile board[HEIGHT][WIDTH], struct ghost gh[GHOSTMAX]) {
+    srand(time(NULL));
+    printf("ghost check\n");
+    int move = rand() % GHOSTMOVEOPTION;
+    printf("ghost move: %d\n", move);
+    for (int i = 0; gh[i].coorX != 0; i++) {
+        if (move == GHOSTD) {
+            board[gh[i].coorX][gh[i].coorY].ghost = FALSE;
+            gh[i].coorY++;
+            board[gh[i].coorX][gh[i].coorY].ghost = TRUE;
+        } else if (move == GHOSTW) {
+            board[gh[i].coorX][gh[i].coorY].ghost = FALSE;
+            gh[i].coorX++;
+            board[gh[i].coorX][gh[i].coorY].ghost = TRUE;
+        } else if (move == GHOSTA) {
+            board[gh[i].coorX][gh[i].coorY].ghost = FALSE;
+            gh[i].coorY--;
+            board[gh[i].coorX][gh[i].coorY].ghost = TRUE;
+        } else {
+            board[gh[i].coorX][gh[i].coorY].ghost = FALSE;
+            gh[i].coorX--;
+            board[gh[i].coorX][gh[i].coorY].ghost = TRUE;
         }
-        tmp = tmp->next;
     }
 }
 
-void removePlayer (struct tile board[HEIGHT][WIDTH], struct ghost *tmp) {
-    if (board[tmp->coorX][tmp->coorY].player == TRUE) {
-        board[tmp->coorX][tmp->coorY].player == FALSE;
-    }
-}
 // Function to check if ghost movement is valid
 int checkGhost(struct tile board[HEIGHT][WIDTH], int move, 
-                struct ghost *tmp) {
-    if (move == moveW && 
-        board[(tmp->coorX) - 1][(tmp->coorY)].space == WALL) {
-        return FALSE;
-    } else if (move == moveA && 
-                board[(tmp->coorX)][(tmp->coorY) - 1].space == WALL) {
-        return FALSE;
-    } else if (move == moveS && 
-                board[(tmp->coorX) + 1][(tmp->coorY)].space == WALL) {
-        return FALSE;
-    } else if (move == moveD && 
-                board[(tmp->coorX)][(tmp->coorY) + 1].space == WALL) {
-        return FALSE;
-    }              
-    return TRUE;
+                struct ghost gh[GHOSTMAX]) {
+    
 }
 
 // Function to check if the movement is valid

@@ -12,10 +12,10 @@ With the help of Blackbox AI for board template
 int main(void) {
     struct tile board[HEIGHT][WIDTH];
     int playerX, playerY;
-    struct ghost *head = NULL;
+    struct ghost gh[GHOSTMAX];
 
     initializeBoard(board);
-    levelBuild(board, &playerX, &playerY, head);
-    movementMechanic(board, &playerX, &playerY, head);
+    levelBuild(board, &playerX, &playerY, gh);
+    movementMechanic(board, &playerX, &playerY, gh);
     return 0;
 }

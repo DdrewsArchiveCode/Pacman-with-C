@@ -21,6 +21,13 @@ void initializeBoard (struct tile board[HEIGHT][WIDTH]) {
     }
 }
 
+// Function to initialize ghost struct
+void initializeGhost (struct ghost gh[GHOSTMAX]) {
+    for(int i = 0; i <= GHOSTMAX; i++) {
+        gh[i].ghost = FALSE;
+    }
+}
+
 // Function to print the board
 void printBoard (struct tile board[HEIGHT][WIDTH]) {
     for (int i = 0; i < HEIGHT; i++) {
@@ -77,11 +84,11 @@ void levelBuild (struct tile board[HEIGHT][WIDTH], int *playerX,
     
     printBoard(board);
     int loopCheck = TRUE;
-    while(loopCheck) {
+    while(loopCheck == TRUE) {
         printf("Input the player initial position: ");
         scanf("%d%d", playerX, playerY);
 
-        if (board[*playerX][*playerY].ghost == FALSE || board[*playerX][*playerY].space != WALL) {
+        if (board[*playerX][*playerY].ghost != TRUE && board[*playerX][*playerY].space != WALL) {
             board[*playerX][*playerY].player = TRUE;
             loopCheck = FALSE;
         } else {
@@ -96,11 +103,12 @@ void levelBuild (struct tile board[HEIGHT][WIDTH], int *playerX,
 void inputGhost (struct tile board[HEIGHT][WIDTH], struct ghost gh[GHOSTMAX], 
                 int coorX, int coorY) {
     int i = 0;
-    while ( gh[i].coorX != 0) {
+    while ( gh[i].ghost == FALSE) {
         i++;
     }
     gh[i].coorX = coorX;
     gh[i].coorY = coorY;
+    gh[i].ghost = TRUE;
     board[gh[i].coorX][gh[i].coorY].ghost = TRUE;
 }
 
@@ -238,10 +246,9 @@ int winCondition (struct tile board[HEIGHT][WIDTH]) {
 // Function to compute Ghost Movement
 void ghostMovement (struct tile board[HEIGHT][WIDTH], struct ghost gh[GHOSTMAX]) {
     srand(time(NULL));
-    printf("ghost check\n");
     int move = rand() % GHOSTMOVEOPTION;
     printf("ghost move: %d\n", move);
-    for (int i = 0; (gh[i].coorX != 0) && (gh[i].coorY != 0); i++) {
+    for (int i = 0; gh[i].ghost == TRUE; i++) { 
         if (move == GHOSTD) {
             board[gh[i].coorX][gh[i].coorY].ghost = FALSE;
             gh[i].coorY++;

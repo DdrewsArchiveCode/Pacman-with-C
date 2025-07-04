@@ -2,7 +2,6 @@
 Made by Deandrew.Y (UNSW student ID z5641581)
 Started on 23 December 2024 00:36
 Finished on --
-With the help of Blackbox AI for board template
 */
 
 #include <stdio.h>
@@ -15,6 +14,7 @@ int main(void) {
     struct ghost gh[GHOSTMAX];
 
     initializeBoard(board);
+    initializeGhost(gh);
     levelBuild(board, &playerX, &playerY, gh);
     movementMechanic(board, &playerX, &playerY, gh);
     return 0;

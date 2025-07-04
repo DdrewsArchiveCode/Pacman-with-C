@@ -1,11 +1,13 @@
 // Header file for define, and function prototype
 #define WIDTH 10
 #define HEIGHT 10
+#define GHOSTMAX 100
 
 // Struct 
 struct ghost {
     int coorX;
     int coorY;
+    int ghost;
 };
 
 struct tile {
@@ -20,10 +22,10 @@ struct tile {
 #define DOT '.'
 
 void initializeBoard (struct tile board[HEIGHT][WIDTH]);
+void initializeGhost (struct ghost gh[GHOSTMAX]);
 void printBoard (struct tile board[HEIGHT][WIDTH]);
 
 //Constant
-#define GHOSTMAX 230
 #define TRUE 1
 #define FALSE 0
 #define EXTRAFALSE 2

@@ -22,11 +22,6 @@ struct tile {
 void initializeBoard (struct tile board[HEIGHT][WIDTH]);
 void printBoard (struct tile board[HEIGHT][WIDTH]);
 
-/* 
-    Starting from this line, all of 
-    them is my own decalration
-*/
-
 //Constant
 #define GHOSTMAX 230
 #define TRUE 1

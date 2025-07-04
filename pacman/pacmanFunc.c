@@ -13,7 +13,7 @@ void initializeBoard (struct tile board[HEIGHT][WIDTH]) {
                 j == 0 || j == WIDTH - 1) {
                 board[i][j].space = WALL; // Create walls
             } else {
-                board[i][j].space = DOT; // Fill with dot
+                board[i][j].space = DOT; // Fill the other with dot(point)
             }
             board[i][j].ghost = FALSE;
             board[i][j].player = FALSE;
@@ -53,7 +53,9 @@ void levelBuild (struct tile board[HEIGHT][WIDTH], int *playerX,
     printf("Level Building Dictionary: \n"
             "w = building a single wall \n"
             "g = adding a ghost in the board\n"
-            "q = quit level building phase\n");
+            "q = quit level building phase\n"
+            "input format: [command] [coor x] [coor y]\n"
+        );
 
     printf ("Input the command that you wish: ");
     scanf(" %c", &input);
@@ -74,9 +76,19 @@ void levelBuild (struct tile board[HEIGHT][WIDTH], int *playerX,
     }
     
     printBoard(board);
-    printf("Input the player initial position: ");
-    scanf("%d%d", playerY, playerX);
-    board[*playerX][*playerY].player = TRUE;
+    int loopCheck = TRUE;
+    while(loopCheck) {
+        printf("Input the player initial position: ");
+        scanf("%d%d", playerX, playerY);
+
+        if (board[*playerX][*playerY].ghost == FALSE || board[*playerX][*playerY].space != WALL) {
+            board[*playerX][*playerY].player = TRUE;
+            loopCheck = FALSE;
+        } else {
+            printf("Invalid player position\n");
+        }
+
+    }
     printBoard(board);
 }
 
@@ -229,7 +241,7 @@ void ghostMovement (struct tile board[HEIGHT][WIDTH], struct ghost gh[GHOSTMAX])
     printf("ghost check\n");
     int move = rand() % GHOSTMOVEOPTION;
     printf("ghost move: %d\n", move);
-    for (int i = 0; gh[i].coorX != 0; i++) {
+    for (int i = 0; (gh[i].coorX != 0) && (gh[i].coorY != 0); i++) {
         if (move == GHOSTD) {
             board[gh[i].coorX][gh[i].coorY].ghost = FALSE;
             gh[i].coorY++;
